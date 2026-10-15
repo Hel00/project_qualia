@@ -1,12 +1,12 @@
-# This is just an example on how to use cmake where a module is not in project dir
-
 cmake_minimum_required(VERSION 3.28)
 project(qualia CXX)
 
 set(CMAKE_CXX_STANDARD 26)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # <-- clangd reads this
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(RAYLIB "/home/hel/Documents/Dev/raylib")
+if(NOT TIGR_DIR)
+  message(FATAL_ERROR "Pass -DTIGR_DIR=/path/to/tigr")
+endif()
 
 add_executable(qualia)
 target_sources(qualia
@@ -17,11 +17,13 @@ target_sources(qualia
 )
 
 target_link_libraries(qualia PRIVATE
-  ${RAYLIB}/build/raylib/libraylib.a
-  X11 GL m pthread dl rt
+  ${TIGR_DIR}/libtigr.a
+  GLU
+  GL
+  X11
 )
 
 target_include_directories(qualia PRIVATE
-  ${RAYLIB}/build/raylib/include
+  ${TIGR_DIR}
 )
 
